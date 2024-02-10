@@ -4,15 +4,18 @@ const session = require("express-session");
 const bodyParser = require("body-parser");
 const MongoClient = require("mongodb").MongoClient;
 const passport = require("passport");
-import { setupPassportLocal } from "./middleware/authMiddleware.js";
-dotenv.config()
+const staticRoutes = require("./routes/static");
+const postsRoutes = require("./routes/posts");
+const authRoutes = require("./routes/auth");
+const { setupPassportLocal } = require("./middleware/authMiddleware");
+
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 const logger = (req, _res, next) => {
-    const time = new Date().toLocaleTimeString();
-    console.log(`${time} ${req.method}: ${req.url}`);
-    next();
+  const time = new Date().toLocaleTimeString();
+  console.log(`${time} ${req.method}: ${req.url}`);
+  next();
 };
 
 //Set the templating engine to use ejs so we can render pages from the server
@@ -22,7 +25,7 @@ app.use(express.static("public"));
 //Allow express to parse form and json data from the client
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-  
+
 app.use(logger);
 
 //Create a session to be used with clients that connect
@@ -32,7 +35,7 @@ app.use(
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }, // Adjust this based on your deployment environment
-  }),
+  })
 );
 
 app.use(passport.initialize());
@@ -47,8 +50,6 @@ app.use(passport.session());
 app.use("/", staticRoutes);
 app.use("/auth", authRoutes(passport));
 app.use("/posts", postsRoutes);
-
-
 
 app.listen(PORT, () => {
   console.log(`Server is running on <http://localhost>:${PORT}`);

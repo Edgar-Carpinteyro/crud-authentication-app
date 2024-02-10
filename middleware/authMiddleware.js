@@ -1,10 +1,8 @@
 var LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
-const { PrismaClient } = require("@prisma/client");
-const prisma = new PrismaClient();
-// import prisma from '../db';
+const prisma = require("../db");
 
-export function setupPassportLocal(passport){ 
+function setupPassportLocal(passport){ 
     passport.use(
         new LocalStrategy(
             {
@@ -52,7 +50,7 @@ export function setupPassportLocal(passport){
 
 //Simple check to see if the user is authenticated via Passport
 //since Passport adds other methods into the req object of Express
-export function checkIfAuthenticated(req, res, next) {
+function checkIfAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
       next();
     } else {

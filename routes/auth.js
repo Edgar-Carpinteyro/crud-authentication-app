@@ -1,12 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require("uuid");
-import prisma from "../db";
-// const prisma = require("prisma");
-
-
-
-
+const prisma = require("../db");
 
 module.exports = function (passport) {
     const router = express.Router();

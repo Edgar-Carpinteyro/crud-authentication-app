@@ -1,7 +1,6 @@
 const express = require("express");
-import prisma from "../db";
-// const prisma = require("prisma");
-const checkIfAuthenticated = require("checkIfAuthenticated");
+const prisma = require("../db");
+const checkIfAuthenticated = require("../middleware/authMiddleware.js");
 
 const router = express.Router();
 
